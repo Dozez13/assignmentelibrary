@@ -1,60 +1,67 @@
 package com.faceit.assignmentelibrary.web.security.config;
 
 
+import com.faceit.assignmentelibrary.web.security.auth.jwt.JwtAuthenticationConverter;
+import com.faceit.assignmentelibrary.web.security.auth.jwt.JwtAuthenticationFilter;
 import com.faceit.assignmentelibrary.web.security.constant.SecurityConstants;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import java.util.Arrays;
-import java.util.List;
+import org.springframework.security.web.authentication.AuthenticationConverter;
+import org.springframework.security.web.authentication.AuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
+@PropertySource("classpath:security.properties")
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
-    @Autowired
-    private AuthenticationEntryPoint restAuthenticationEntryPoint;
-    @Autowired
-    private AuthenticationFailureHandler authenticationLoginFailureHandler;
-    @Autowired
-    private AuthenticationSuccessHandler authenticationLoginSuccessfulHandler;
-    @Autowired
-    private AuthenticationProvider loginProvider;
-    @Autowired
-    private AuthenticationProvider jwtProvider;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private AuthenticationProvider jwtProvider;
+    @Autowired
+    private RequestMatcher skipPathRequestMatcher;
 
 
     @Bean
     public SecurityFilterChain appHttpSecurity(HttpSecurity appHttpSecurity) throws Exception {
         appHttpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(restAuthenticationEntryPoint))
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz.requestMatchers(SecurityConstants.API_SECURE_URL)
                         .authenticated())
-                .with(buildJWTConfigurer(), Customizer.withDefaults());
+                .authenticationManager(authenticationManager())
+                .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return appHttpSecurity.build();
     }
 
-    private JWTConfigurer buildJWTConfigurer() {
-        List<AuthenticationProvider> authenticationProviders = Arrays.asList(loginProvider, jwtProvider);
-        return new JWTConfigurer(authenticationLoginFailureHandler, authenticationLoginSuccessfulHandler, authenticationProviders, objectMapper);
+
+    @Bean
+    public AuthenticationConverter jwtAuthenticationConverter() {
+        return new JwtAuthenticationConverter();
+    }
+
+    @Bean
+    public AuthenticationFilter authenticationFilter() {
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(), jwtAuthenticationConverter());
+        jwtAuthenticationFilter.setRequestMatcher(skipPathRequestMatcher);
+        return jwtAuthenticationFilter;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        return new ProviderManager(jwtProvider);
     }
 
 }
