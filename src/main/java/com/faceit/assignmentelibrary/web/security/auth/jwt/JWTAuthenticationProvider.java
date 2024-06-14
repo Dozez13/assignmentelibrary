@@ -37,13 +37,11 @@ public class JWTAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Email or password is incorrect");
         }
 
-        List<GrantedAuthority> grantedAuthorities = decodedJWT.getClaim(SecurityConstants.SCOPES_CLAIM).asList(String.class).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-
         String role = decodedJWT.getClaim(SecurityConstants.ROLE_CLAIM).asString();
 
-        UserAuthenticationInfo authenticationInfo = new UserAuthenticationInfo(email, role, grantedAuthorities);
+        UserAuthenticationInfo authenticationInfo = new UserAuthenticationInfo(email, role);
 
-        return new JWTAuthenticationToken(grantedAuthorities, authenticationInfo);
+        return new JWTAuthenticationToken(authenticationInfo);
 
     }
 

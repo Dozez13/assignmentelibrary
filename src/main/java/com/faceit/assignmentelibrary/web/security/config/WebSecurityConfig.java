@@ -4,6 +4,7 @@ package com.faceit.assignmentelibrary.web.security.config;
 import com.faceit.assignmentelibrary.web.security.auth.jwt.JwtAuthenticationConverter;
 import com.faceit.assignmentelibrary.web.security.auth.jwt.JwtAuthenticationFilter;
 import com.faceit.assignmentelibrary.web.security.constant.SecurityConstants;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,12 +27,13 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @PropertySource("classpath:security.properties")
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    @Autowired
-    private AuthenticationProvider jwtProvider;
-    @Autowired
-    private RequestMatcher skipPathRequestMatcher;
+
+    private final AuthenticationProvider jwtProvider;
+
+    private final RequestMatcher skipPathRequestMatcher;
 
 
     @Bean
@@ -39,8 +41,12 @@ public class WebSecurityConfig {
         appHttpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authz -> authz.requestMatchers(SecurityConstants.API_SECURE_URL)
-                        .authenticated())
+                .authorizeHttpRequests(authz -> {
+                    authz.requestMatchers(SecurityConstants.AUTHENTICATION_URL, SecurityConstants.REGISTRATION_URL)
+                            .permitAll();
+                    authz.requestMatchers(SecurityConstants.API_SECURE_URL)
+                            .authenticated();
+                })
                 .authenticationManager(authenticationManager())
                 .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return appHttpSecurity.build();

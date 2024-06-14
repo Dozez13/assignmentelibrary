@@ -15,5 +15,4 @@ public class UserAuthenticationInfo {
 
     private final String role;
 
-    private final List<GrantedAuthority> grantedAuthorities;
 }

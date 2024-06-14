@@ -3,9 +3,6 @@ package com.faceit.assignmentelibrary.web.security.auth.jwt;
 
 import com.faceit.assignmentelibrary.web.security.model.UserAuthenticationInfo;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 
 public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 
@@ -13,8 +10,8 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 
     private UserAuthenticationInfo authenticationInfo;
 
-    public JWTAuthenticationToken(Collection<? extends GrantedAuthority> authorities, UserAuthenticationInfo authenticationInfo) {
-        super(authorities);
+    public JWTAuthenticationToken(UserAuthenticationInfo authenticationInfo) {
+        super(null);
         this.eraseCredentials();
         this.authenticationInfo = authenticationInfo;
         this.setAuthenticated(true);
