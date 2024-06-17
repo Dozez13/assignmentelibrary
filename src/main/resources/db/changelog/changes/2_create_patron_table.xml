@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="create_patron_table" author="Pavlo Manuilenko">
+        <preConditions>
+            <not>
+                <tableExists tableName="patron"/>
+            </not>
+            <tableExists tableName="user"/>
+            <columnExists tableName="user" columnName="id"/>
+        </preConditions>
+        <createTable tableName="patron">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="patron_id_pk"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="patron" baseColumnNames="id" constraintName="patron_user_id_fk"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

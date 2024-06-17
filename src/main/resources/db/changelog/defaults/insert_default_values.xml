@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="insert_user_table" author="Pavlo Manuilenko" context="dev">
+        <insert tableName="user">
+            <column name="id" value="1"/>
+            <column name="email" value="1pavmarnui1@gmail.com"/>
+            <column name="first_name" value="1Adam1"/>
+            <column name="last_name" value="1Smith1"/>
+            <column name="password" value="$2a$12$/dldib/PPjVfMxRJofsu/eN5.wQPe8fsQrUG.ZG/0v7rOe0FSMEoi"/>
+            <column name="user_role" value="PATRON"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="2"/>
+            <column name="email" value="2pavmarnui1@gmail.com"/>
+            <column name="first_name" value="2Adam1"/>
+            <column name="last_name" value="2Smith1"/>
+            <column name="password" value="$2a$12$/dldib/PPjVfMxRJofsu/eN5.wQPe8fsQrUG.ZG/0v7rOe0FSMEoi"/>
+            <column name="user_role" value="PATRON"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="3"/>
+            <column name="email" value="3pavmarnui1@gmail.com"/>
+            <column name="first_name" value="3Adam1"/>
+            <column name="last_name" value="3Smith1"/>
+            <column name="password" value="$2a$12$/dldib/PPjVfMxRJofsu/eN5.wQPe8fsQrUG.ZG/0v7rOe0FSMEoi"/>
+            <column name="user_role" value="PATRON"/>
+        </insert>
+        <insert tableName="patron">
+            <column name="id" value="1"/>
+        </insert>
+        <insert tableName="patron">
+            <column name="id" value="2"/>
+        </insert>
+        <insert tableName="patron">
+            <column name="id" value="3"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

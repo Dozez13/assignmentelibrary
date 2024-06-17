@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="create_patron_book_table" author="Pavlo Manuilenko">
+        <preConditions>
+            <not>
+                <tableExists tableName="patron_book"/>
+            </not>
+        </preConditions>
+        <createTable tableName="patron_book">
+            <column name="patron_id" type="bigint"/>
+            <column name="book_id" type="bigint"/>
+            <column name="expires_at" type="date"/>
+            <column name="borrowed_date" type="date"/>
+            <column name="queued_date" type="date"/>
+            <column name="book_status" type="enum('BORROWED','QUEUED')"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="patron_book" baseColumnNames="patron_id"
+                                 constraintName="patron_book_patron_id_fk"
+                                 referencedTableName="patron"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="patron_book" baseColumnNames="book_id"
+                                 constraintName="patron_book_book_id_fk"
+                                 referencedTableName="book"
+                                 referencedColumnNames="id"/>
+        <addPrimaryKey tableName="patron_book" columnNames="patron_id, book_id"
+                       constraintName="patron_book_patron_book_id_fk"/>
+
+    </changeSet>
+
+</databaseChangeLog>

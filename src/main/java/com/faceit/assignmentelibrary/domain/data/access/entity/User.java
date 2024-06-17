@@ -35,8 +35,8 @@ public abstract class User {
     @Column(name = "password", columnDefinition = "char(60)")
     private String password;
 
-    @Column(name = "user_role")
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "user_role")
     private UserRole userRole;
 
 }

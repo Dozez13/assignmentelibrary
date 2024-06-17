@@ -26,6 +26,9 @@ public class PatronBook {
     @Column(name = "borrowed_date")
     private LocalDate borrowedDate;
 
+    @Column(name = "queued_date")
+    private LocalDate queuedDate;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "book_status")
     private BookStatus bookStatus;
