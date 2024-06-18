@@ -15,3 +15,11 @@ spring:
   liquibase:
     change-log: 'classpath:db/changelog/db.changelog-master-dev.xml'
     contexts: dev
+  web:
+    locale: en_EN
+    locale-resolver: fixed
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE

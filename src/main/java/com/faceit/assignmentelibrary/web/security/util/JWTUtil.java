@@ -18,7 +18,7 @@ public class JWTUtil {
     public String generateJWTToken(User authenticationInfo) {
         Algorithm algorithm = Algorithm.HMAC256(SecurityConstants.SECRET.getBytes());
         return JWT.create()
-                .withSubject(authenticationInfo.getEmail())
+                .withSubject(String.valueOf(authenticationInfo.getId()))
                 .withClaim(SecurityConstants.ROLE_CLAIM, authenticationInfo.getUserRole().name())
                 .withIssuer(SecurityConstants.ISSUER)
                 .withIssuedAt(Date.from(Instant.now()))

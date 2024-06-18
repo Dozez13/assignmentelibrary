@@ -8,8 +8,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableJpaRepositories("com.faceit.assignmentelibrary.domain.data.access.repository")
-@EntityScan("com.faceit.assignmentelibrary.domain.data.access.entity")
 public class Application {
 
 	public static void main(String[] args) {

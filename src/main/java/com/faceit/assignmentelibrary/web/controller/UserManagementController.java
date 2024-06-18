@@ -1,7 +1,7 @@
 package com.faceit.assignmentelibrary.web.controller;
 
 import com.faceit.assignmentelibrary.core.dto.UserSigninRequestDto;
-import com.faceit.assignmentelibrary.core.dto.UserSigninResponseDto;
+import com.faceit.assignmentelibrary.core.dto.PatronSignupRequestDto;
 import com.faceit.assignmentelibrary.core.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,9 +19,14 @@ public class UserManagementController {
     private final AuthService authService;
 
     @PostMapping("/signin")
-    public ResponseEntity<UserSigninResponseDto> signIn(@RequestBody UserSigninRequestDto userSigninRequestDto) {
+    public ResponseEntity<?> signIn(@RequestBody UserSigninRequestDto userSigninRequestDto) {
 
         return new ResponseEntity<>(authService.authenticate(userSigninRequestDto), HttpStatus.OK);
+    }
+    @PostMapping("/signup")
+    public ResponseEntity<?> signUp(@RequestBody PatronSignupRequestDto patronSignupRequestDto) {
+        authService.signUp(patronSignupRequestDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 

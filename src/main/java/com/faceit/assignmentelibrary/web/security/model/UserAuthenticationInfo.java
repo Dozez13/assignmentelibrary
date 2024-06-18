@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 public class UserAuthenticationInfo {
 
-    private final String email;
+    private final Long id;
 
     private final String role;
 

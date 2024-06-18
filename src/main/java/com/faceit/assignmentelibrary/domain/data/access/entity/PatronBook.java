@@ -1,12 +1,9 @@
 package com.faceit.assignmentelibrary.domain.data.access.entity;
 
 import com.faceit.assignmentelibrary.domain.data.access.entity.embeddable.PatronBookID;
-import com.faceit.assignmentelibrary.domain.data.access.entity.enums.BookStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,12 +22,5 @@ public class PatronBook {
 
     @Column(name = "borrowed_date")
     private LocalDate borrowedDate;
-
-    @Column(name = "queued_date")
-    private LocalDate queuedDate;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "book_status")
-    private BookStatus bookStatus;
 
 }

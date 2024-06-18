@@ -1,11 +1,9 @@
 package com.faceit.assignmentelibrary.web.security.config;
 
 
-import com.faceit.assignmentelibrary.web.security.auth.jwt.JwtAuthenticationConverter;
 import com.faceit.assignmentelibrary.web.security.auth.jwt.JwtAuthenticationFilter;
 import com.faceit.assignmentelibrary.web.security.constant.SecurityConstants;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -20,6 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.AuthenticationFilter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -30,14 +29,17 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-
-    private final AuthenticationProvider jwtProvider;
+    private final AuthenticationSuccessHandler jwtAuthenticationSuccessHandler;
+    private final AuthenticationConverter jwtAuthenticationConverter;
+    private final AuthenticationProvider jwtAuthenticationProvider;
 
     private final RequestMatcher skipPathRequestMatcher;
 
 
     @Bean
     public SecurityFilterChain appHttpSecurity(HttpSecurity appHttpSecurity) throws Exception {
+        AuthenticationManager authenticationManager = buildAuthenticationManager();
+        AuthenticationFilter authenticationFilter = buildAuthenticationFilter(authenticationManager);
         appHttpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -47,27 +49,22 @@ public class WebSecurityConfig {
                     authz.requestMatchers(SecurityConstants.API_SECURE_URL)
                             .authenticated();
                 })
-                .authenticationManager(authenticationManager())
-                .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .authenticationManager(authenticationManager)
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return appHttpSecurity.build();
     }
 
 
-    @Bean
-    public AuthenticationConverter jwtAuthenticationConverter() {
-        return new JwtAuthenticationConverter();
-    }
-
-    @Bean
-    public AuthenticationFilter authenticationFilter() {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(), jwtAuthenticationConverter());
+    public AuthenticationFilter buildAuthenticationFilter(AuthenticationManager authenticationManager) {
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtAuthenticationConverter);
         jwtAuthenticationFilter.setRequestMatcher(skipPathRequestMatcher);
+        jwtAuthenticationFilter.setSuccessHandler(jwtAuthenticationSuccessHandler);
         return jwtAuthenticationFilter;
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        return new ProviderManager(jwtProvider);
+
+    public AuthenticationManager buildAuthenticationManager() {
+        return new ProviderManager(jwtAuthenticationProvider);
     }
 
 }

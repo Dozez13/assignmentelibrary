@@ -10,16 +10,11 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-@Component("jwtProvider")
+@Component
 @RequiredArgsConstructor
-public class JWTAuthenticationProvider implements AuthenticationProvider {
+public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private final JWTUtil jwtUtil;
     private final UserRepository userRepository;
@@ -30,23 +25,23 @@ public class JWTAuthenticationProvider implements AuthenticationProvider {
 
         DecodedJWT decodedJWT = jwtUtil.decodeRawJWTToken(rawToken);
 
-        String email = decodedJWT.getSubject();
+        Long id = Long.valueOf(decodedJWT.getSubject());
 
-        boolean isUserExists = userRepository.existsByEmail(email);
+        boolean isUserExists = userRepository.existsById(id);
         if (!isUserExists) {
             throw new BadCredentialsException("Email or password is incorrect");
         }
 
         String role = decodedJWT.getClaim(SecurityConstants.ROLE_CLAIM).asString();
 
-        UserAuthenticationInfo authenticationInfo = new UserAuthenticationInfo(email, role);
+        UserAuthenticationInfo authenticationInfo = new UserAuthenticationInfo(id, role);
 
-        return new JWTAuthenticationToken(authenticationInfo);
+        return new JwtAuthenticationToken(authenticationInfo);
 
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return JWTAuthenticationToken.class.isAssignableFrom(authentication);
+        return JwtAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }
