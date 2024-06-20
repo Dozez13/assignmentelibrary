@@ -9,9 +9,11 @@ public class BookGetDto {
 
     private Long id;
 
-    private String name;
+    private String title;
 
-    private Short publishingYear;
+    private String description;
 
-    private String genre;
+    private String previewImageBase64;
+
+    private BookDetailsGetDto bookDetails;
 }

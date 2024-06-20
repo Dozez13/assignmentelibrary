@@ -10,6 +10,8 @@ public interface BookService {
 
     List<BookGetDto> getAllBooks();
 
+    BookGetDto getBookById(Long id);
+
     void addBook(BookPostDto bookPostDto, MultipartFile bookPreview);
 
     void deleteBook(Long bookId);

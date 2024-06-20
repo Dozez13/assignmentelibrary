@@ -5,12 +5,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class BookPostDto {
+public class PublisherPostDto {
 
+    private Long id;
 
     private String title;
-
-    private String description;
-
-    private BookDetailsPostDto bookDetails;
 }

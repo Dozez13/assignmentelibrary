@@ -17,6 +17,6 @@ import java.util.List;
 @Data
 public class Patron extends User {
 
-    @OneToMany(mappedBy = "patronBookID.patron", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PatronBook> patronBooks;
+    @OneToMany(mappedBy = "patron", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QueuedPatronBook> queuedPatronBooks;
 }

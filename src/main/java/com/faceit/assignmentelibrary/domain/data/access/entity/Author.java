@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,26 +16,21 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Data
-public class Book {
+public class Author {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "authorBookID.book", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "authorBookID.author", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuthorBook> authorBookList;
 
-    @OneToOne(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private BookDetails bookDetails;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @OneToOne(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private QueuedPatronBook queuedPatronBook;
-
-    @Column(name = "title")
-    private String title;
+    @Column(name = "last_name")
+    private String lastName;
 
     @Column(name = "description")
     private String description;
-
-    @Column(name = "preview_image_location_path")
-    private String previewImageLocationPath;
 }

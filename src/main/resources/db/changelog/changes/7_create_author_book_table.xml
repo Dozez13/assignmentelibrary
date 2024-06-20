@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="create_author_book_table" author="Pavlo Manuilenko">
+        <preConditions>
+            <not>
+                <tableExists tableName="author_book"/>
+            </not>
+            <tableExists tableName="author"/>
+            <tableExists tableName="book"/>
+            <columnExists tableName="author" columnName="id"/>
+            <columnExists tableName="book" columnName="id"/>
+        </preConditions>
+        <createTable tableName="author_book">
+            <column name="author_id" type="bigint"/>
+            <column name="book_id" type="bigint"/>
+            <column name="author_role" type="enum('MAIN','SIDE')"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="author_book" baseColumnNames="author_id"
+                                 constraintName="author_book_author_id_fk"
+                                 referencedTableName="author"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="author_book" baseColumnNames="book_id"
+                                 constraintName="author_book_book_id_fk"
+                                 referencedTableName="book"
+                                 referencedColumnNames="id"/>
+        <addPrimaryKey tableName="author_book" columnNames="author_id, book_id"
+                       constraintName="author_book_author_book_id_fk"/>
+
+    </changeSet>
+
+</databaseChangeLog>

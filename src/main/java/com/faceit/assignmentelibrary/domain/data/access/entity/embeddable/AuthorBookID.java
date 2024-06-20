@@ -1,5 +1,6 @@
 package com.faceit.assignmentelibrary.domain.data.access.entity.embeddable;
 
+import com.faceit.assignmentelibrary.domain.data.access.entity.Author;
 import com.faceit.assignmentelibrary.domain.data.access.entity.Book;
 import com.faceit.assignmentelibrary.domain.data.access.entity.Patron;
 import jakarta.persistence.Embeddable;
@@ -12,11 +13,11 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor
 @Data
-public class PatronBookID {
+public class AuthorBookID {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patron_id")
-    private Patron patron;
+    @JoinColumn(name = "author_id")
+    private Author author;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")

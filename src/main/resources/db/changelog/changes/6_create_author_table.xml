@@ -6,20 +6,19 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-    <changeSet id="create_book_table" author="Pavlo Manuilenko">
+    <changeSet id="create_author_table" author="Pavlo Manuilenko">
         <preConditions>
             <not>
-                <tableExists tableName="book"/>
+                <tableExists tableName="author"/>
             </not>
         </preConditions>
-        <createTable tableName="book">
+        <createTable tableName="author">
             <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" primaryKeyName="book_id_pk"/>
+                <constraints primaryKey="true" primaryKeyName="author_id_pk"/>
             </column>
-            <column name="title" type="varchar(255)"/>
+            <column name="first_name" type="varchar(255)"/>
+            <column name="last_name" type="varchar(255)"/>
             <column name="description" type="varchar(255)"/>
-            <column name="preview_image_location_path" type="varchar(255)"/>
         </createTable>
     </changeSet>
-
 </databaseChangeLog>

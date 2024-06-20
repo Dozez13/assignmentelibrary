@@ -31,6 +31,13 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public BookGetDto getBookById(Long id) {
+        return bookRepository.findById(id)
+                .map(bookMapper::toBookGetDto)
+                .orElseThrow(() -> new BookNotFoundException(messageService.getMessage("book.with.id.not.found", id)));
+    }
+
     @Transactional
     @Override
     public void addBook(BookPostDto bookPostDto, MultipartFile bookPreview) {

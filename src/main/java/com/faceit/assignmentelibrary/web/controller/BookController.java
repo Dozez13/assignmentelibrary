@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/secure/books")
-@PreAuthorize("authentication.principal.role == 'PATRON'")
 @RequiredArgsConstructor
 public class BookController {
 
@@ -29,6 +29,17 @@ public class BookController {
     public ResponseEntity<?> getAllBooks() {
         return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("authentication.principal.role == 'PATRON' or authentication.principal.role == 'ADMIN'")
+    public ResponseEntity<?> getBookById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(bookService.getBookById(id), HttpStatus.OK);
+    }
+//    @PatchMapping("/{id}")
+//    @PreAuthorize("authentication.principal.role == 'ADMIN'")
+//    public ResponseEntity<?> patchBookById(@PathVariable("id") Long id) {
+//        return new ResponseEntity<>(bookService.getBookById(id), HttpStatus.OK);
+//    }
 
     @PostMapping
     @PreAuthorize("authentication.principal.role == 'ADMIN'")

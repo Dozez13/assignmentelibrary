@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="create_book_details_table" author="Pavlo Manuilenko">
+        <preConditions>
+            <not>
+                <tableExists tableName="book_details"/>
+            </not>
+            <tableExists tableName="book"/>
+            <tableExists tableName="publisher"/>
+            <columnExists tableName="book" columnName="id"/>
+            <columnExists tableName="publisher" columnName="id"/>
+        </preConditions>
+        <createTable tableName="book_details">
+            <column name="book_id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="book_details_id_pk"/>
+            </column>
+            <column name="publisher_id" type="bigint"/>
+            <column name="pages_number" type="integer"/>
+            <column name="publishing_year" type="smallint"/>
+            <column name="genre" type="enum('ADVENTURE','FANTASY','SCIENCE_FICTION')"/>
+            <column name="pdf_preview_file_location_path" type="varchar(255)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="book_details" baseColumnNames="book_id"
+                                 constraintName="book_details_book_id_fk"
+                                 referencedTableName="book"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="book_details" baseColumnNames="publisher_id"
+                                 constraintName="book_details_publisher_id_fk"
+                                 referencedTableName="publisher"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
