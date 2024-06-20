@@ -2,22 +2,25 @@ package com.faceit.assignmentelibrary.core.mapper;
 
 import com.faceit.assignmentelibrary.core.dto.PatronSignupRequestDto;
 import com.faceit.assignmentelibrary.domain.data.access.entity.Patron;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import org.mapstruct.MappingTarget;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface PatronMapper {
-    @Mapping(target = "userRole", constant = "PATRON")
-    Patron toPatronFromUserSignupRequestDto(PatronSignupRequestDto patronSignupRequestDto);
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+public abstract class PatronMapper {
+    protected PasswordEncoder passwordEncoder;
 
-    @AfterMapping
-    default void map(@MappingTarget Patron target, PatronSignupRequestDto source, @Context PasswordEncoder passwordEncoder) {
-        target.setPassword(passwordEncoder.encode(source.getPassword()));
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
+
+    @Mapping(target = "userRole", constant = "PATRON")
+    @Mapping(target = "password", expression = "java(passwordEncoder.encode(patronSignupRequestDto.getPassword()))")
+    public abstract Patron toPatronFromUserSignupRequestDto(PatronSignupRequestDto patronSignupRequestDto);
 
 }

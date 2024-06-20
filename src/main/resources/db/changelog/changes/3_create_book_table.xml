@@ -19,6 +19,7 @@
             <column name="name" type="varchar(255)"/>
             <column name="publishing_year" type="smallint"/>
             <column name="genre" type="enum('ADVENTURE','FANTASY','SCIENCE_FICTION')"/>
+            <column name="pdf_preview_file_location_path" type="varchar(255)"/>
         </createTable>
     </changeSet>
 

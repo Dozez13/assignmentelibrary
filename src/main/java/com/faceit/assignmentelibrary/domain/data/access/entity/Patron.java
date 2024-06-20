@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
+
 @Entity
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class Patron extends User {
 

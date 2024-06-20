@@ -31,6 +31,14 @@
             <column name="password" value="$2a$12$/dldib/PPjVfMxRJofsu/eN5.wQPe8fsQrUG.ZG/0v7rOe0FSMEoi"/>
             <column name="user_role" value="PATRON"/>
         </insert>
+        <insert tableName="user">
+            <column name="id" value="4"/>
+            <column name="email" value="4pavmarnui1@gmail.com"/>
+            <column name="first_name" value="4Adam1"/>
+            <column name="last_name" value="4Smith1"/>
+            <column name="password" value="$2a$12$/dldib/PPjVfMxRJofsu/eN5.wQPe8fsQrUG.ZG/0v7rOe0FSMEoi"/>
+            <column name="user_role" value="ADMIN"/>
+        </insert>
         <insert tableName="patron">
             <column name="id" value="1"/>
         </insert>
@@ -39,6 +47,9 @@
         </insert>
         <insert tableName="patron">
             <column name="id" value="3"/>
+        </insert>
+        <insert tableName="admin">
+            <column name="id" value="4"/>
         </insert>
     </changeSet>
 

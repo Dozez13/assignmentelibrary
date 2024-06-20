@@ -20,7 +20,7 @@
             <column name="first_name" type="varchar(255)"/>
             <column name="last_name" type="varchar(255)"/>
             <column name="password" type="char(60)"/>
-            <column name="user_role" type="enum('PATRON')"/>
+            <column name="user_role" type="enum('PATRON','ADMIN')"/>
         </createTable>
     </changeSet>
 

@@ -28,9 +28,6 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    private BookPreview bookPreview;
-
     @OneToMany(mappedBy = "patronBookID.book", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PatronBook> patronBooks;
 
@@ -44,6 +41,9 @@ public class Book {
     @Enumerated(EnumType.STRING)
     @Column(name = "genre")
     private Genre genre;
+
+    @Column(name = "pdf_preview_file_location_path")
+    private String pdfPreviewFileLocationPath;
 
 
 }

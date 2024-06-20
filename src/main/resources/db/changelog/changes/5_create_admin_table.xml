@@ -6,21 +6,21 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-    <changeSet id="create_book_preview_table" author="Pavlo Manuilenko">
+    <changeSet id="create_admin_table" author="Pavlo Manuilenko">
         <preConditions>
             <not>
-                <tableExists tableName="book_preview"/>
+                <tableExists tableName="admin"/>
             </not>
+            <tableExists tableName="user"/>
+            <columnExists tableName="user" columnName="id"/>
         </preConditions>
-        <createTable tableName="book_preview">
-            <column name="book_id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" primaryKeyName="book_preview_id_pk"/>
+        <createTable tableName="admin">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="admin_id_pk"/>
             </column>
-            <column name="pdf_file_location_path" type="varchar(255)"/>
         </createTable>
-        <addForeignKeyConstraint baseTableName="book_preview" baseColumnNames="book_id"
-                                 constraintName="book_preview_book_id_fk"
-                                 referencedTableName="book"
+        <addForeignKeyConstraint baseTableName="admin" baseColumnNames="id" constraintName="admin_user_id_fk"
+                                 referencedTableName="user"
                                  referencedColumnNames="id"/>
     </changeSet>
 

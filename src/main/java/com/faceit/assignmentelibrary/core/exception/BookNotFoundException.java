@@ -8,20 +8,18 @@ import java.net.URI;
 
 public class BookNotFoundException extends ErrorResponseException {
     private static final String ERROR_CODE_URI = "http://localhost:8080/error-code";
+    private static final String ERROR_CODE = "book-not-found";
+    private static final URI TYPE = new DefaultUriBuilderFactory()
+            .uriString(ERROR_CODE_URI)
+            .pathSegment(ERROR_CODE)
+            .build();
 
-    public BookNotFoundException(String errorCode, String detail, Long id) {
+
+    public BookNotFoundException(String title) {
         super(HttpStatus.NOT_FOUND);
-        setTitle("User with ID is not found: " + id);
-        setDetail(detail);
-        setTypeFromErrorCode(errorCode);
+        setTitle(title);
+        setType(TYPE);
     }
 
-    private void setTypeFromErrorCode(String errorCode) {
-        URI type = new DefaultUriBuilderFactory()
-                .uriString(ERROR_CODE_URI)
-                .pathSegment(errorCode)
-                .build();
-        setType(type);
-    }
 
 }
